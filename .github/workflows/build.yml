@@ -3,7 +3,7 @@ name: Build Unsigned IPA
 on:
   push:
     branches: [ "main" ]
-  workflow_dispatch: 
+  workflow_dispatch: # Allows manual triggering from the GitHub interface
 
 jobs:
   build:
@@ -21,8 +21,8 @@ jobs:
       - name: Build the App
         run: |
           xcodebuild clean build \
-            -project ".github/workflows/StepsWrite.xcodeproj" \
-            -scheme "StepsWrite" \
+            -project "YourProjectName.xcodeproj" \
+            -scheme "YourSchemeName" \
             -configuration Release \
             -sdk iphoneos \
             -arch arm64 \
@@ -30,13 +30,15 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
-            
+
       - name: Package into IPA
         run: |
           mkdir -p Payload
+          # Move the compiled .app directory into the Payload folder
           mv build/*.app Payload/
+          # Zip the Payload folder into an .ipa file
           zip -r app.ipa Payload
-          
+
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4
         with:
