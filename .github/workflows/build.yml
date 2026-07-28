@@ -3,7 +3,7 @@ name: Build Unsigned IPA
 on:
   push:
     branches: [ "main" ]
-  workflow_dispatch: # Allows manual triggering from the GitHub interface
+  workflow_dispatch: 
 
 jobs:
   build:
@@ -34,9 +34,7 @@ jobs:
       - name: Package into IPA
         run: |
           mkdir -p Payload
-          # Move the compiled .app directory into the Payload folder
           mv build/*.app Payload/
-          # Zip the Payload folder into an .ipa file
           zip -r app.ipa Payload
           
       - name: Upload IPA Artifact
